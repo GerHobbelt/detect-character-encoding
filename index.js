@@ -1,11 +1,18 @@
 'use strict';
 
-const bindings = require('bindings')('icuWrapper.node');
+const valid8 = require('valid-8')
 
 module.exports = buf => {
 	if (!Buffer.isBuffer(buf)) {
 		throw new TypeError('Argument to detect-character-encoding must be a buffer.');
 	}
 
-	return bindings(buf);
+	if (!valid8(buf)) {
+		return null;
+	}
+
+	return {
+		encoding: 'UTF-8',
+		confidence: 100
+	};
 };
